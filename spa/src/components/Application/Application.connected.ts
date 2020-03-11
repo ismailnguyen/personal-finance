@@ -9,7 +9,7 @@ function mapStateToProps(state: ApplicationState): StateProps {
   };
 }
 
-export const Application = connect<StateProps, undefined, OwnProps, ApplicationState>(
+export const Application = connect<StateProps, {}, OwnProps, ApplicationState>(
   mapStateToProps,
-  undefined
+  {}
 )(ApplicationComponent);

@@ -1,4 +1,4 @@
 import { Operation } from "./model";
-import { createGenericDomain, GenericDomain } from "redux-generic";
+import { CollectionDomain, createCollectionDomain } from "redux-generic";
 
-export const operationDomain: GenericDomain<Operation> = createGenericDomain("OPERATION");
+export const operationDomain: CollectionDomain<Operation> = createCollectionDomain("OPERATION");

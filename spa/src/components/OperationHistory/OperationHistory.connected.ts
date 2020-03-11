@@ -9,7 +9,7 @@ function mapStateToProps(state: ApplicationState, { accountId }: OwnProps): Stat
   return { operations };
 }
 
-export const OperationHistory = connect<StateProps, undefined, OwnProps, ApplicationState>(
+export const OperationHistory = connect<StateProps, {}, OwnProps, ApplicationState>(
   mapStateToProps,
-  undefined
+  {}
 )(OperationHistoryComponent);

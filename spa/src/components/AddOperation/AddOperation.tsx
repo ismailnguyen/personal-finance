@@ -1,6 +1,6 @@
 import React from "react";
 import { RawOperation } from "../../business/account/operation/model";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
 import "./AddOperation.scss";
 
 export interface OwnProps {

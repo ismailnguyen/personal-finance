@@ -8,7 +8,4 @@ function mapStateToProps(state: ApplicationState, { accountId }: OwnProps): Stat
   return { amount: balance };
 }
 
-export const Balance = connect<StateProps, undefined, OwnProps, ApplicationState>(
-  mapStateToProps,
-  undefined
-)(BalanceComponent);
+export const Balance = connect<StateProps, {}, OwnProps, ApplicationState>(mapStateToProps, {})(BalanceComponent);

@@ -1,4 +1,4 @@
 import { Account } from "./model";
-import { createGenericDomain, GenericDomain } from "redux-generic";
+import { createCollectionDomain, CollectionDomain } from "redux-generic";
 
-export const accountDomain: GenericDomain<Account> = createGenericDomain("ACCOUNT");
+export const accountDomain: CollectionDomain<Account> = createCollectionDomain("ACCOUNT");

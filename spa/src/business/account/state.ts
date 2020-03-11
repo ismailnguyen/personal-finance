@@ -1,4 +1,4 @@
 import { Account } from "./model";
-import { GenericState } from "redux-generic";
+import { CollectionState } from "redux-generic";
 
-export type AccountState = GenericState<Account>;
+export type AccountState = CollectionState<Account>;

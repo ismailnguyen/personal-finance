@@ -1,12 +1,13 @@
-import { createStore, applyMiddleware, Middleware, Store } from "redux";
+import { createStore, applyMiddleware, Middleware, Store, Reducer, AnyAction } from "redux";
 import thunk from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
-import { rootReducer } from "./business/reducer";
 import { enableBatching } from "redux-batched-actions";
-import { ExtraArgument } from "./business/definitions";
+import { composeWithDevTools } from "redux-devtools-extension";
 import { ApplicationApi } from "./business/api";
-import { applicationThunksCreators } from "./business/thunks";
+import { ExtraArgument } from "./business/definitions";
+import { rootReducer } from "./business/reducer";
 import { applicationSelectors } from "./business/selectors";
+import { applicationThunksCreators } from "./business/thunks";
+import { ApplicationState } from "./business/state";
 
 export function makeGetStore(api: ApplicationApi) {
   return function getStore(...additionalMiddlewares: Middleware[]): Store {
@@ -17,6 +18,9 @@ export function makeGetStore(api: ApplicationApi) {
     };
     const thunkMiddleware: Middleware = thunk.withExtraArgument(extraArgument);
     const middlewares: Middleware[] = [thunkMiddleware, ...additionalMiddlewares];
-    return createStore(enableBatching(rootReducer), composeWithDevTools(applyMiddleware(...middlewares)));
+    return createStore(
+      enableBatching(rootReducer as Reducer<ApplicationState, AnyAction>),
+      composeWithDevTools(applyMiddleware(...middlewares))
+    );
   };
 }

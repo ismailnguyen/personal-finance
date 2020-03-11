@@ -1,11 +1,9 @@
 import { Account } from "./model";
-import { GenericAction } from "redux-generic";
+import { CollectionAction } from "redux-generic";
 import { accountDomain } from "./domain";
 import { operationActionCreators, OperationAction } from "./operation/actions";
 
-export type GenericAccountAction = GenericAction<Account>;
-
-export type AccountAction = GenericAccountAction | OperationAction;
+export type AccountAction = CollectionAction<Account> | OperationAction;
 
 export const accountActionCreators = {
   ...accountDomain.actionCreators,

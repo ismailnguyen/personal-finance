@@ -1,4 +1,4 @@
-import { RawOperation, Operation, SerializedRawOperation, deserializeRawOperations } from "./operation";
+import { RawOperation, SerializedRawOperation, deserializeRawOperations } from "./operation";
 
 export interface Account {
   id: string;

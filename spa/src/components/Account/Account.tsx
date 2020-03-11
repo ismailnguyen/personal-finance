@@ -7,7 +7,7 @@ export interface Props {
   accountId: string;
 }
 
-export const Account: React.StatelessComponent<Props> = ({ accountId }: Props) => {
+export const Account: React.FunctionComponent<Props> = ({ accountId }: Props) => {
   return (
     <div>
       <AddOperation accountId={accountId} />

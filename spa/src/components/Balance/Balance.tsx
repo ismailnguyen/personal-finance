@@ -12,7 +12,7 @@ export interface StateProps {
 
 type Props = OwnProps & StateProps;
 
-export const BalanceComponent: React.StatelessComponent<Props> = ({ amount }: Props) => {
+export const BalanceComponent: React.FunctionComponent<Props> = ({ amount }: Props) => {
   return (
     <div className="balance" data-e2e="account-balance">
       <LabeledDebitOrCredit amount={amount} renderLabel={() => <span>Balance</span>} />

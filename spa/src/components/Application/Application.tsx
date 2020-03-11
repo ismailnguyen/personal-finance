@@ -10,7 +10,7 @@ export interface StateProps {
 
 type Props = OwnProps & StateProps;
 
-export const ApplicationComponent: React.StatelessComponent<Props> = ({ accounts }: Props) => {
+export const ApplicationComponent: React.FunctionComponent<Props> = ({ accounts }: Props) => {
   return (
     <div>
       {accounts.map(({ id }: IAccount) => (

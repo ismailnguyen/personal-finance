@@ -7,7 +7,7 @@ export interface Props {
   renderLabel(): React.ReactElement;
 }
 
-export const LabeledDebitOrCredit: React.StatelessComponent<Props> = ({ amount, renderLabel }: Props) => {
+export const LabeledDebitOrCredit: React.FunctionComponent<Props> = ({ amount, renderLabel }: Props) => {
   return (
     <div className="labeled-debit-or-credit">
       <div className="label-container">{renderLabel()}</div>

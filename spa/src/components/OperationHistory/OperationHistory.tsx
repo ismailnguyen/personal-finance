@@ -12,7 +12,7 @@ export interface StateProps {
 
 export type Props = OwnProps & StateProps;
 
-export const OperationHistoryComponent: React.StatelessComponent<Props> = ({ operations }: Props) => {
+export const OperationHistoryComponent: React.FunctionComponent<Props> = ({ operations }: Props) => {
   return (
     <div>
       {operations.map((operation: IOperation) => (

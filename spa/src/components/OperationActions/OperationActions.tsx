@@ -5,7 +5,7 @@ export interface Props {
   onDelete(): void;
 }
 
-export const OperationActions: React.StatelessComponent<Props> = ({ onDelete }: Props) => (
+export const OperationActions: React.FunctionComponent<Props> = ({ onDelete }: Props) => (
   <div className="actions">
     <button
       className="delete mdl-button mdl-js-button mdl-button--icon"

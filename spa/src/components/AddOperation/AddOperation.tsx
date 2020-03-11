@@ -17,6 +17,10 @@ interface State {
   value: number | undefined;
 }
 
+export const AddOperationComponentRefactored: React.FunctionComponent<Props> = ({ accountId }: Props) => {
+  return null;
+};
+
 export class AddOperationComponent extends React.Component<Props, State> {
   private inputRef: React.RefObject<HTMLInputElement>;
 

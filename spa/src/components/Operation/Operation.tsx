@@ -19,7 +19,7 @@ export interface DispatchProps {
 
 export type Props = OwnProps & StateProps & DispatchProps;
 
-export const OperationComponent: React.StatelessComponent<Props> = ({
+export const OperationComponent: React.FunctionComponent<Props> = ({
   operation: { date, amount },
   deleteOperation
 }) => (

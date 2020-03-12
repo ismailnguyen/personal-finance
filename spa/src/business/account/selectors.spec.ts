@@ -1,48 +1,36 @@
 import { ApplicationState } from "../state";
 import { mockObject } from "../../util/mockObject";
-import { Operation } from "./operation";
-import { getAccountOperations, computeBalance } from "./selectors";
+import { Account } from "./model";
+import { computeBalance } from "./selectors";
 import { accountFixtures } from "./fixtures";
-import { operationFixtures } from "./operation/fixtures";
-
-const { account0 } = accountFixtures;
-const { operation0, operation1, operation2 } = operationFixtures;
-
-describe("Test of getAccountOperations()", () => {
-  it("should return all operations corresponding to the given account", () => {
-    // GIVEN
-    const state = mockObject<ApplicationState>({
-      account: {
-        [account0.id]: {
-          ...account0,
-          operationIds: [operation0.id, operation1.id, operation2.id]
-        }
-      },
-      operation: {
-        [operation0.id]: operation0,
-        [operation1.id]: operation1,
-        [operation2.id]: operation2
-      }
-    });
-
-    // WHEN
-    const actual: Operation[] = getAccountOperations(state, account0.id);
-
-    // THEN
-    const expected: Operation[] = [operation0, operation1, operation2];
-    expect(actual).toEqual(expected);
-  });
-});
+import { Operation, operationFixtures } from "./operation";
 
 describe("Test of computeBalance selector", () => {
   it("should add amounts of all operations", () => {
+    const account0: Account = {
+      ...accountFixtures.account0,
+      id: "accountId0"
+    };
+
+    const operation0: Operation = {
+      ...operationFixtures.operation0,
+      accountId: "accountId0"
+    };
+
+    const operation1: Operation = {
+      ...operationFixtures.operation1,
+      accountId: "accountId0"
+    };
+
+    const operation2: Operation = {
+      ...operationFixtures.operation2,
+      accountId: "anotherAccountId"
+    };
+
     // GIVEN
     const state = mockObject<ApplicationState>({
       account: {
-        [account0.id]: {
-          ...account0,
-          operationIds: [operation0.id, operation1.id, operation2.id]
-        }
+        [account0.id]: account0
       },
       operation: {
         [operation0.id]: operation0,
@@ -55,7 +43,7 @@ describe("Test of computeBalance selector", () => {
     const actual: number = computeBalance(state, account0.id);
 
     // THEN
-    const expected: number = operation0.amount + operation1.amount + operation2.amount;
+    const expected: number = operation0.amount + operation1.amount;
     expect(actual).toEqual(expected);
   });
 });

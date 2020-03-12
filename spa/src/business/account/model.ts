@@ -2,7 +2,6 @@ import { RawOperation, SerializedRawOperation, deserializeRawOperations } from "
 
 export interface Account {
   id: string;
-  operationIds: string[];
 }
 
 export interface AccountWithRawOperations {

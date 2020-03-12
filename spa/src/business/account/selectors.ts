@@ -1,12 +1,10 @@
 import { Account } from "./model";
 import { operationSelectors, Operation } from "./operation";
 import { ApplicationState } from "../state";
-import { getOperation } from "./operation/selectors";
 
 export const accountSelectors = {
   getAllAccounts,
   getAccount,
-  getAccountOperations,
   computeBalance,
   ...operationSelectors
 };
@@ -23,13 +21,9 @@ export function getAccount({ account: state }: ApplicationState, id: string): Ac
   return account;
 }
 
-export function getAccountOperations(state: ApplicationState, accountId: string): Operation[] {
-  const { operationIds }: Account = getAccount(state, accountId);
-  return operationIds.map((operationId: string) => getOperation(state, operationId));
-}
-
 export function computeBalance(state: ApplicationState, accountId: string): number {
-  return getAccountOperations(state, accountId)
+  return operationSelectors
+    .getAccountOperations(state, accountId)
     .map(extractAmount)
     .reduce(sum, 0);
 }

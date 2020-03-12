@@ -18,12 +18,10 @@ describe("Test of fetchAccounts()", () => {
     // GIVEN
     const accountsFetched: Thunk = jest.fn().mockReturnValue({ type: "accountsFetched" });
     const operationsFetched: Thunk = jest.fn().mockReturnValue({ type: "operationsFetched" });
-    const getAccounts = jest
-      .fn()
-      .mockResolvedValue([
-        { id: account0.id, operations: [operation0] },
-        { id: account1.id, operations: [operation1, operation2] }
-      ]);
+    const getAccounts = jest.fn().mockResolvedValue([
+      { id: account0.id, operations: [operation0] },
+      { id: account1.id, operations: [operation1, operation2] }
+    ]);
     const extraArgument = mockObject<ExtraArgument>({
       thunkCreators: {
         accountsFetched,
@@ -42,10 +40,7 @@ describe("Test of fetchAccounts()", () => {
 
     // THEN
     expect(getAccounts).toHaveBeenCalled();
-    expect(accountsFetched).toHaveBeenCalledWith([
-      { id: account0.id, operationIds: [operation0.id] },
-      { id: account1.id, operationIds: [operation1.id, operation2.id] }
-    ]);
+    expect(accountsFetched).toHaveBeenCalledWith([account0, account1]);
     expect(operationsFetched).toHaveBeenCalledWith([
       { ...operation0, accountId: account0.id },
       { ...operation1, accountId: account1.id },
@@ -88,9 +83,6 @@ describe("Test of addOperation()", () => {
     // GIVEN
     const addOperationApi = jest.fn().mockResolvedValue("OK");
     const extraArgument = mockObject<ExtraArgument>({
-      selectors: {
-        getAccount: () => account0
-      },
       api: {
         addOperation: addOperationApi
       }
@@ -107,21 +99,9 @@ describe("Test of addOperation()", () => {
     expect(addOperationApi).toHaveBeenCalled();
     const actualActions = store.getActions();
     const expectedActions = [
-      batchActions(
-        [
-          applicationActionCreators.account.createUpdateAction(
-            account0.id,
-            {
-              operationIds: [...account0.operationIds, operation0.id]
-            },
-            "ACCOUNT_UPDATED"
-          ),
-          applicationActionCreators.account.operation.createInsertAction(
-            operation0.id,
-            { ...operation0, accountId: account0.id },
-            "OPERATION_ADDED"
-          )
-        ],
+      applicationActionCreators.account.operation.createInsertAction(
+        operation0.id,
+        { ...operation0, accountId: account0.id },
         "OPERATION_ADDED"
       )
     ];
@@ -134,10 +114,6 @@ describe("Test of deleteOperation()", () => {
     // GIVEN
     const deleteOperationApi = jest.fn().mockResolvedValue("OK");
     const extraArgument = mockObject<ExtraArgument>({
-      selectors: {
-        getOperation: () => ({ accountId: "accountId" }),
-        getAccount: () => ({ operationIds: [operation0.id, operation1.id, operation2.id] })
-      },
       api: {
         deleteOperation: deleteOperationApi
       }
@@ -154,19 +130,7 @@ describe("Test of deleteOperation()", () => {
     expect(deleteOperationApi).toHaveBeenCalled();
     const actualActions = store.getActions();
     const expectedActions = [
-      batchActions(
-        [
-          applicationActionCreators.account.createUpdateAction(
-            "accountId",
-            {
-              operationIds: [operation1.id, operation2.id]
-            },
-            "ACCOUNT_UPDATED"
-          ),
-          applicationActionCreators.account.operation.createDeleteAction(operation0.id, "OPERATION_DELETED")
-        ],
-        "OPERATION_DELETED"
-      )
+      applicationActionCreators.account.operation.createDeleteAction(operation0.id, "OPERATION_DELETED")
     ];
     expect(actualActions).toEqual(expectedActions);
   });

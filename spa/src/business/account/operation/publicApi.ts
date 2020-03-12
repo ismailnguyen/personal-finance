@@ -1,5 +1,6 @@
-import { getOperation } from "./selectors";
+import { getOperation, getAccountOperations } from "./selectors";
 
 export const operationPublicApi = {
-  getOperation
+  getOperation,
+  getAccountOperations
 };

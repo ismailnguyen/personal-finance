@@ -34,10 +34,7 @@ export function fetchAccounts(): Thunk {
     );
     dispatch(operationsFetched(allAccountsOperations));
 
-    const accounts: Account[] = accountsWithOperations.map(({ id, operations }: AccountWithRawOperations) => ({
-      id,
-      operationIds: operations.map(({ id }: RawOperation) => id)
-    }));
+    const accounts: Account[] = accountsWithOperations.map(({ id }: AccountWithRawOperations) => ({ id }));
     dispatch(accountsFetched(accounts));
   };
 }
@@ -68,22 +65,8 @@ interface AddOperationApi {
 }
 
 export function addOperation(accountId: string, operation: RawOperation): Thunk {
-  return async (
-    dispatch: ExtendedDispatch,
-    getState: () => ApplicationState,
-    { selectors: { getAccount }, api: { addOperation } }
-  ) => {
+  return async (dispatch: ExtendedDispatch, _getState: () => ApplicationState, { api: { addOperation } }) => {
     await addOperation(accountId, operation);
-
-    const state: ApplicationState = getState();
-    const account: Account = getAccount(state, accountId);
-    const updateAccountAction = applicationActionCreators.account.createUpdateAction(
-      accountId,
-      {
-        operationIds: [...account.operationIds, operation.id]
-      },
-      "ACCOUNT_UPDATED"
-    );
 
     const insertOperationAction = applicationActionCreators.account.operation.createInsertAction(
       operation.id,
@@ -91,9 +74,7 @@ export function addOperation(accountId: string, operation: RawOperation): Thunk 
       "OPERATION_ADDED"
     );
 
-    const batchAction = batchActions([updateAccountAction, insertOperationAction], "OPERATION_ADDED");
-
-    dispatch(batchAction);
+    dispatch(insertOperationAction);
   };
 }
 
@@ -102,42 +83,14 @@ interface DeleteOperationApi {
 }
 
 export function deleteOperation(operationId: string): Thunk {
-  return async (
-    dispatch: ExtendedDispatch,
-    getState: () => ApplicationState,
-    { selectors: { getOperation, getAccount }, api: { deleteOperation } }
-  ) => {
+  return async (dispatch: ExtendedDispatch, _getState: () => ApplicationState, { api: { deleteOperation } }) => {
     await deleteOperation(operationId);
-
-    const state: ApplicationState = getState();
-    const { accountId } = getOperation(state, operationId);
-    const { operationIds } = getAccount(state, accountId);
-    const updatedOperationIds = removeOperationId(operationIds, operationId);
-    const updateAccountAction = applicationActionCreators.account.createUpdateAction(
-      accountId,
-      {
-        operationIds: updatedOperationIds
-      },
-      "ACCOUNT_UPDATED"
-    );
 
     const deleteOperationAction = applicationActionCreators.account.operation.createDeleteAction(
       operationId,
       "OPERATION_DELETED"
     );
 
-    const batchAction = batchActions([updateAccountAction, deleteOperationAction], "OPERATION_DELETED");
-
-    dispatch(batchAction);
+    dispatch(deleteOperationAction);
   };
-}
-
-function removeOperationId(operationIds: string[], operationId: string): string[] {
-  const updatedOperationIds = [...operationIds];
-  const index = operationIds.findIndex(id => id === operationId);
-  if (index === -1) {
-    throw new Error(`The account is expected to have an operation with id ${operationId} but it doesn't`);
-  }
-  updatedOperationIds.splice(index, 1);
-  return updatedOperationIds;
 }

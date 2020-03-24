@@ -43,6 +43,24 @@ describe("Operation reducer", () => {
     expect(actual).toEqual(expected);
   });
 
+  it("OPERATION_ADDED don't add into balance when under zero", () => {
+    // GIVEN
+    const state: OperationState = {
+      operations: [operation0, operation1, operation1]
+    };
+    const operation: Operation = operation1;
+    const action: OperationAction = operationActionCreators.createOperationAddedAction(operation);
+
+    // WHEN
+    const actual: OperationState = operationReducer(state, action);
+
+    // THEN
+    const expected: OperationState = {
+      operations: [operation0, operation1, operation1]
+    };
+    expect(actual).toEqual(expected);
+  });
+
   it("OPERATION_DELETED", () => {
     // GIVEN
     const state: OperationState = {

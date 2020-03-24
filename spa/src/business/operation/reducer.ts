@@ -2,6 +2,7 @@ import { Reducer } from "redux";
 import { OperationState, defaultState } from "./state";
 import { OperationAction } from "./actions";
 import { Operation } from "./model";
+import { operationSelectors } from "./selectors";
 
 export const operationReducer: Reducer<OperationState, OperationAction> = (
   state: OperationState = defaultState,
@@ -30,6 +31,8 @@ function setOperations(state: OperationState, operations: Operation[]): Operatio
 }
 
 function addOperation(state: OperationState, operation: Operation): OperationState {
+  const balance = operationSelectors.computeBalance(state);
+
   return {
     ...state,
     operations: [...state.operations, operation]

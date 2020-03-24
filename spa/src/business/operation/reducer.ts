@@ -33,10 +33,14 @@ function setOperations(state: OperationState, operations: Operation[]): Operatio
 function addOperation(state: OperationState, operation: Operation): OperationState {
   const balance = operationSelectors.computeBalance(state);
 
-  return {
-    ...state,
-    operations: [...state.operations, operation]
-  };
+  if (balance + operation.amount >= 0) {
+    return {
+      ...state,
+      operations: [...state.operations, operation]
+    };
+  }
+
+  return state;
 }
 
 function deleteOperation(state: OperationState, operationId: string): OperationState {
